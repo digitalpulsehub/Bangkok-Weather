@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangkok Weather - Real-time Forecast & Climate Information</title>
+    <meta name="description" content="Get accurate Bangkok weather forecasts, current conditions, temperature, humidity, and climate information. Real-time updates for Bangkok weather today, tomorrow, and 7-day forecast.">
+    <meta name="keywords" content="Bangkok weather, Bangkok weather today, Bangkok weather forecast, Bangkok temperature today, Bangkok climate, Bangkok weather now, Bangkok weather tomorrow, Bangkok weekly weather, Bangkok weather updates, Bangkok weather forecast 7 days, Bangkok weather forecast 10 days, Bangkok rain forecast, Bangkok humidity today, Bangkok temperature now, Bangkok weather conditions, Bangkok weather report, Bangkok weather live">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a6bb3 0%, #0d4d8c 100%);
+            color: white;
+            padding: 30px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.8rem;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .logo p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .refresh-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refresh-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Current Weather */
+        .current-weather {
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .weather-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .weather-main {
+            text-align: center;
+            padding: 20px;
+            border-right: 1px solid #eee;
+        }
+
+        .temperature {
+            font-size: 4.5rem;
+            font-weight: 300;
+            line-height: 1;
+            margin: 15px 0;
+            color: #1a6bb3;
+        }
+
+        .weather-description {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #777;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .detail-item i {
+            font-size: 1.8rem;
+            color: #1a6bb3;
+            width: 40px;
+            text-align: center;
+        }
+
+        .detail-text h3 {
+            font-size: 0.95rem;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .detail-text p {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Forecast Sections */
+        .section-title {
+            font-size: 1.8rem;
+            color: #1a6bb3;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .forecast-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .forecast-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .hourly-forecast {
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .hourly-container {
+            display: flex;
+            gap: 20px;
+            min-width: min-content;
+        }
+
+        .hour-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: #f8f9fa;
+        }
+
+        .hour-time {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .hour-temp {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a6bb3;
+            margin: 10px 0;
+        }
+
+        .daily-forecast {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .day-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: #f8f9fa;
+            transition: background-color 0.3s ease;
+        }
+
+        .day-item:hover {
+            background-color: #edf4fc;
+        }
+
+        .day-name {
+            font-weight: 600;
+            color: #555;
+            width: 100px;
+        }
+
+        .day-weather {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 150px;
+        }
+
+        .day-temps {
+            display: flex;
+            gap: 15px;
+        }
+
+        .temp-high {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .temp-low {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        /* Climate Info */
+        .climate-info {
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .info-item i {
+            font-size: 2.2rem;
+            color: #1a6bb3;
+            margin-bottom: 15px;
+        }
+
+        .info-item h3 {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .info-item p {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Loading and Error States */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: #777;
+        }
+
+        .error {
+            background-color: #ffeaea;
+            border-left: 4px solid #e74c3c;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #c0392b;
+        }
+
+        /* SEO Content */
+        .seo-content {
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+        }
+
+        .seo-content h2 {
+            color: #1a6bb3;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .seo-content h3 {
+            color: #555;
+            margin: 25px 0 15px;
+            font-size: 1.4rem;
+        }
+
+        .seo-content p {
+            margin-bottom: 15px;
+            color: #444;
+            line-height: 1.7;
+        }
+
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .keyword {
+            background-color: #f0f7ff;
+            color: #1a6bb3;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .weather-main {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 25px;
+            }
+            
+            .temperature {
+                font-size: 3.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .forecast-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .weather-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-item {
+                padding: 12px;
+            }
+            
+            .current-weather, .forecast-card, .climate-info, .seo-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-sun"></i>
+                    <div>
+                        <h1>Bangkok Weather</h1>
+                        <p>Real-time forecast & climate information</p>
+                    </div>
+                </div>
+                <button class="refresh-btn" id="refreshBtn">
+                    <i class="fas fa-redo-alt"></i> Refresh Data (F5)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Current Weather Section -->
+        <section class="current-weather" id="currentWeather">
+            <div class="loading">Loading current weather data...</div>
+        </section>
+
+        <!-- Hourly Forecast Section -->
+        <section class="forecast-section">
+            <h2 class="section-title"><i class="fas fa-clock"></i> Bangkok Weather Hourly Forecast</h2>
+            <div class="forecast-card hourly-forecast" id="hourlyForecast">
+                <div class="loading">Loading hourly forecast...</div>
+            </div>
+        </section>
+
+        <!-- 7-Day Forecast Section -->
+        <section class="forecast-section">
+            <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Bangkok 7-Day Weather Forecast</h2>
+            <div class="forecast-card daily-forecast" id="dailyForecast">
+                <div class="loading">Loading 7-day forecast...</div>
+            </div>
+        </section>
+
+        <!-- Climate Information Section -->
+        <section class="climate-info">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> Bangkok Climate Information</h2>
+            <div class="info-grid" id="climateInfo">
+                <div class="loading">Loading climate data...</div>
+            </div>
+        </section>
+
+        <!-- SEO Content Section -->
+        <section class="seo-content">
+            <h2>Bangkok Weather Information & Travel Guide</h2>
+            
+            <p>Get the most accurate and up-to-date <strong>Bangkok weather forecast</strong> with real-time conditions, temperature, humidity, and precipitation data. Our comprehensive weather service provides detailed information for travelers and residents alike.</p>
+            
+            <h3>Bangkok Weather Today & Current Conditions</h3>
+            <p>Stay informed about <strong>Bangkok weather today</strong> with our real-time updates. Check the current temperature, feels-like conditions, humidity levels, wind speed, and precipitation probability. Whether you're planning outdoor activities or just want to know if you need an umbrella, our <strong>Bangkok weather now</strong> data helps you make informed decisions.</p>
+            
+            <h3>Bangkok Weather Forecast for Tomorrow and This Week</h3>
+            <p>Plan your week with our detailed <strong>Bangkok weather forecast 7 days</strong> ahead. Our advanced weather models provide reliable predictions for <strong>Bangkok weather tomorrow</strong> and throughout the week, including high and low temperatures, precipitation chances, and wind conditions. For longer-term planning, we also offer extended outlooks.</p>
+            
+            <h3>Bangkok Climate & Seasonal Patterns</h3>
+            <p>Understanding <strong>Bangkok climate</strong> is essential for travelers. Bangkok experiences a tropical monsoon climate with three main seasons: the hot season (March-June), the rainy season (July-October), and the cool season (November-February). The <strong>Bangkok dry season</strong> typically offers the most pleasant weather for tourists, while the <strong>Bangkok rainy season</strong> brings regular showers and higher humidity.</p>
+            
+            <h3>Best Time to Visit Bangkok Based on Weather</h3>
+            <p>The <strong>best time to visit Bangkok weather</strong>-wise is during the cool season from November to February when temperatures are milder and rainfall is minimal. <strong>Bangkok weather December</strong> through January is particularly pleasant with average temperatures around 26-28°C. For those who don't mind the heat, <strong>Bangkok weather summer</strong> (hot season) offers plenty of sunshine but can be quite intense with high temperatures and humidity.</p>
+            
+            <h3>Bangkok Weather Keywords</h3>
+            <div class="keyword-list">
+                <span class="keyword">Bangkok weather today</span>
+                <span class="keyword">Bangkok temperature now</span>
+                <span class="keyword">Bangkok humidity today</span>
+                <span class="keyword">Bangkok weather forecast</span>
+                <span class="keyword">Bangkok 7 day forecast</span>
+                <span class="keyword">Bangkok rain forecast</span>
+                <span class="keyword">Bangkok weather live</span>
+                <span class="keyword">Bangkok climate</span>
+                <span class="keyword">Bangkok weather radar</span>
+                <span class="keyword">Bangkok monsoon season</span>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Bangkok coordinates
+        const BANGKOK_LAT = 13.7563;
+        const BANGKOK_LON = 100.5018;
+        
+        // DOM Elements
+        const currentWeatherEl = document.getElementById('currentWeather');
+        const hourlyForecastEl = document.getElementById('hourlyForecast');
+        const dailyForecastEl = document.getElementById('dailyForecast');
+        const climateInfoEl = document.getElementById('climateInfo');
+        const refreshBtn = document.getElementById('refreshBtn');
+        
+        // Weather icons mapping based on Open-Meteo weather codes
+        const weatherIcons = {
+            0: { icon: 'fas fa-sun', desc: 'Clear sky' },
+            1: { icon: 'fas fa-sun', desc: 'Mainly clear' },
+            2: { icon: 'fas fa-cloud-sun', desc: 'Partly cloudy' },
+            3: { icon: 'fas fa-cloud', desc: 'Overcast' },
+            45: { icon: 'fas fa-smog', desc: 'Fog' },
+            48: { icon: 'fas fa-smog', desc: 'Depositing rime fog' },
+            51: { icon: 'fas fa-cloud-rain', desc: 'Light drizzle' },
+            53: { icon: 'fas fa-cloud-rain', desc: 'Moderate drizzle' },
+            55: { icon: 'fas fa-cloud-rain', desc: 'Dense drizzle' },
+            56: { icon: 'fas fa-cloud-rain', desc: 'Light freezing drizzle' },
+            57: { icon: 'fas fa-cloud-rain', desc: 'Dense freezing drizzle' },
+            61: { icon: 'fas fa-cloud-rain', desc: 'Slight rain' },
+            63: { icon: 'fas fa-cloud-rain', desc: 'Moderate rain' },
+            65: { icon: 'fas fa-cloud-showers-heavy', desc: 'Heavy rain' },
+            66: { icon: 'fas fa-cloud-rain', desc: 'Light freezing rain' },
+            67: { icon: 'fas fa-cloud-rain', desc: 'Heavy freezing rain' },
+            71: { icon: 'fas fa-snowflake', desc: 'Slight snow fall' },
+            73: { icon: 'fas fa-snowflake', desc: 'Moderate snow fall' },
+            75: { icon: 'fas fa-snowflake', desc: 'Heavy snow fall' },
+            77: { icon: 'fas fa-snowflake', desc: 'Snow grains' },
+            80: { icon: 'fas fa-cloud-showers-heavy', desc: 'Slight rain showers' },
+            81: { icon: 'fas fa-cloud-showers-heavy', desc: 'Moderate rain showers' },
+            82: { icon: 'fas fa-cloud-showers-heavy', desc: 'Violent rain showers' },
+            85: { icon: 'fas fa-snowflake', desc: 'Slight snow showers' },
+            86: { icon: 'fas fa-snowflake', desc: 'Heavy snow showers' },
+            95: { icon: 'fas fa-bolt', desc: 'Thunderstorm' },
+            96: { icon: 'fas fa-bolt', desc: 'Thunderstorm with slight hail' },
+            99: { icon: 'fas fa-bolt', desc: 'Thunderstorm with heavy hail' }
+        };
+        
+        // Get weather icon based on weather code
+        function getWeatherIcon(weatherCode) {
+            return weatherIcons[weatherCode] || { icon: 'fas fa-question-circle', desc: 'Unknown' };
+        }
+        
+        // Format date for display
+        function formatDate(dateString, format = 'short') {
+            const date = new Date(dateString);
+            if (format === 'short') {
+                return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            } else if (format === 'hour') {
+                return date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true });
+            }
+            return date.toLocaleDateString('en-US');
+        }
+        
+        // Fetch weather data from Open-Meteo API
+        async function fetchWeatherData() {
+            try {
+                // Show loading states
+                currentWeatherEl.innerHTML = '<div class="loading">Loading current weather data...</div>';
+                hourlyForecastEl.innerHTML = '<div class="loading">Loading hourly forecast...</div>';
+                dailyForecastEl.innerHTML = '<div class="loading">Loading 7-day forecast...</div>';
+                climateInfoEl.innerHTML = '<div class="loading">Loading climate data...</div>';
+                
+                // Fetch current weather and forecast from Open-Meteo
+                const response = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${BANGKOK_LAT}&longitude=${BANGKOK_LON}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,weather_code,pressure_msl,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,weather_code,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&timezone=Asia%2FBangkok&forecast_days=7`
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`Weather API error: ${response.status}`);
+                }
+                
+                const weatherData = await response.json();
+                
+                // Fetch additional climate data (historical averages)
+                const climateResponse = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${BANGKOK_LAT}&longitude=${BANGKOK_LON}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&past_days=92&forecast_days=1`
+                );
+                
+                if (!climateResponse.ok) {
+                    console.warn("Could not fetch climate data, using defaults");
+                }
+                
+                const climateData = await climateResponse.json().catch(() => null);
+                
+                // Update all sections with the fetched data
+                updateCurrentWeather(weatherData);
+                updateHourlyForecast(weatherData);
+                updateDailyForecast(weatherData);
+                updateClimateInfo(weatherData, climateData);
+                
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                currentWeatherEl.innerHTML = `<div class="error">Error loading weather data: ${error.message}. Please try again.</div>`;
+            }
+        }
+        
+        // Update current weather section
+        function updateCurrentWeather(data) {
+            const current = data.current;
+            const weatherIcon = getWeatherIcon(current.weather_code);
+            
+            currentWeatherEl.innerHTML = `
+                <div class="weather-card weather-main">
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Bangkok, Thailand</span>
+                    </div>
+                    <div class="temperature">${Math.round(current.temperature_2m)}°C</div>
+                    <div class="weather-description">${weatherIcon.desc}</div>
+                    <div style="font-size: 3rem; color: #f39c12; margin: 15px 0;">
+                        <i class="${weatherIcon.icon}"></i>
+                    </div>
+                    <div style="color: #777; margin-top: 10px;">Feels like ${Math.round(current.apparent_temperature)}°C</div>
+                </div>
+                <div class="weather-card">
+                    <h3 style="font-size: 1.4rem; color: #1a6bb3; margin-bottom: 20px;">Current Conditions</h3>
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <i class="fas fa-tint"></i>
+                            <div class="detail-text">
+                                <h3>Humidity</h3>
+                                <p>${current.relative_humidity_2m}%</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-wind"></i>
+                            <div class="detail-text">
+                                <h3>Wind Speed</h3>
+                                <p>${Math.round(current.wind_speed_10m)} km/h</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-cloud-rain"></i>
+                            <div class="detail-text">
+                                <h3>Precipitation</h3>
+                                <p>${current.precipitation} mm</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <div class="detail-text">
+                                <h3>Pressure</h3>
+                                <p>${current.pressure_msl} hPa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Update hourly forecast section
+        function updateHourlyForecast(data) {
+            const hourly = data.hourly;
+            let hourlyHTML = '<div class="hourly-container">';
+            
+            // Show next 12 hours
+            for (let i = 0; i < Math.min(12, hourly.time.length); i++) {
+                const time = hourly.time[i];
+                const temp = Math.round(hourly.temperature_2m[i]);
+                const weatherCode = hourly.weather_code[i];
+                const precipProb = hourly.precipitation_probability[i];
+                const weatherIcon = getWeatherIcon(weatherCode);
+                
+                hourlyHTML += `
+                    <div class="hour-item">
+                        <div class="hour-time">${formatDate(time, 'hour')}</div>
+                        <div style="font-size: 1.8rem; color: #f39c12; margin: 10px 0;">
+                            <i class="${weatherIcon.icon}"></i>
+                        </div>
+                        <div class="hour-temp">${temp}°C</div>
+                        <div style="font-size: 0.9rem; color: #3498db;">
+                            <i class="fas fa-cloud-rain"></i> ${precipProb}%
+                        </div>
+                    </div>
+                `;
+            }
+            
+            hourlyHTML += '</div>';
+            hourlyForecastEl.innerHTML = hourlyHTML;
+        }
+        
+        // Update daily forecast section
+        function updateDailyForecast(data) {
+            const daily = data.daily;
+            let dailyHTML = '';
+            
+            // Show 7-day forecast
+            for (let i = 0; i < Math.min(7, daily.time.length); i++) {
+                const date = daily.time[i];
+                const weatherCode = daily.weather_code[i];
+                const tempMax = Math.round(daily.temperature_2m_max[i]);
+                const tempMin = Math.round(daily.temperature_2m_min[i]);
+                const precipProb = daily.precipitation_probability_max[i];
+                const precipSum = daily.precipitation_sum[i];
+                const weatherIcon = getWeatherIcon(weatherCode);
+                
+                // Format day name
+                const dayName = i === 0 ? 'Today' : formatDate(date, 'short');
+                
+                dailyHTML += `
+                    <div class="day-item">
+                        <div class="day-name">${dayName}</div>
+                        <div class="day-weather">
+                            <div style="font-size: 1.5rem; color: #f39c12;">
+                                <i class="${weatherIcon.icon}"></i>
+                            </div>
+                            <div>${precipProb}%</div>
+                            <div style="font-size: 0.9rem; color: #777;">
+                                <i class="fas fa-tint"></i> ${precipSum}mm
+                            </div>
+                        </div>
+                        <div class="day-temps">
+                            <div class="temp-high">${tempMax}°</div>
+                            <div class="temp-low">${tempMin}°</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            dailyForecastEl.innerHTML = dailyHTML;
+        }
+        
+        // Update climate information section
+        function updateClimateInfo(weatherData, climateData) {
+            const current = weatherData.current;
+            
+            // Calculate averages if climate data is available
+            let avgHigh = 33, avgLow = 25, avgPrecip = 5.0;
+            
+            if (climateData && climateData.daily) {
+                const tempsMax = climateData.daily.temperature_2m_max;
+                const tempsMin = climateData.daily.temperature_2m_min;
+                const precip = climateData.daily.precipitation_sum;
+                
+                if (tempsMax && tempsMax.length > 0) {
+                    const sumMax = tempsMax.reduce((a, b) => a + b, 0);
+                    avgHigh = Math.round(sumMax / tempsMax.length);
+                }
+                
+                if (tempsMin && tempsMin.length > 0) {
+                    const sumMin = tempsMin.reduce((a, b) => a + b, 0);
+                    avgLow = Math.round(sumMin / tempsMin.length);
+                }
+                
+                if (precip && precip.length > 0) {
+                    const sumPrecip = precip.reduce((a, b) => a + b, 0);
+                    avgPrecip = (sumPrecip / precip.length).toFixed(1);
+                }
+            }
+            
+            climateInfoEl.innerHTML = `
+                <div class="info-item">
+                    <i class="fas fa-thermometer-half"></i>
+                    <h3>Average High</h3>
+                    <p>${avgHigh}°C</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-thermometer-quarter"></i>
+                    <h3>Average Low</h3>
+                    <p>${avgLow}°C</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-cloud-rain"></i>
+                    <h3>Avg Precipitation</h3>
+                    <p>${avgPrecip} mm/day</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-percentage"></i>
+                    <h3>Current Humidity</h3>
+                    <p>${current.relative_humidity_2m}%</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-sun"></i>
+                    <h3>Current UV Index</h3>
+                    <p>High</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-wind"></i>
+                    <h3>Current Wind</h3>
+                    <p>${Math.round(current.wind_speed_10m)} km/h</p>
+                </div>
+            `;
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch initial data
+            fetchWeatherData();
+            
+            // Set up refresh button
+            refreshBtn.addEventListener('click', fetchWeatherData);
+            
+            // Enable F5 refresh
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F5') {
+                    e.preventDefault();
+                    fetchWeatherData();
+                    
+                    // Visual feedback
+                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+                    setTimeout(() => {
+                        refreshBtn.innerHTML = '<i class="fas fa-redo-alt"></i> Refresh Data (F5)';
+                    }, 1000);
+                }
+            });
+        });
+        
+        // Add JSON-LD structured data for SEO
+        document.addEventListener('DOMContentLoaded', () => {
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
+                "name": "Bangkok Weather",
+                "description": "Real-time weather forecasts and climate information for Bangkok, Thailand",
+                "applicationCategory": "WeatherApplication",
+                "operatingSystem": "Any",
+                "url": window.location.href,
+                "author": {
+                    "@type": "Organization",
+                    "name": "Bangkok Weather Service"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                },
+                "keywords": "Bangkok weather, Bangkok weather today, Bangkok weather forecast, Bangkok temperature, Bangkok climate"
+            });
+            document.head.appendChild(script);
+        });
+    </script>
+</body>
+</html>
