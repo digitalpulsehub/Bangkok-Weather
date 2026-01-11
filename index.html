@@ -19,457 +19,15 @@
     <!-- Google AdSense Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3452391762887871" crossorigin="anonymous"></script>
     
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f8fafc;
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-            color: white;
-            padding: 1.5rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background-color: #FFD700;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #1e3a8a;
-            font-size: 1.5rem;
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-        
-        .logo p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        .refresh-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .refresh-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        /* Ad Container */
-        .ad-container {
-            display: flex;
-            justify-content: center;
-            margin: 25px 0;
-            min-height: 90px;
-        }
-        
-        /* Main Content */
-        .weather-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .current-weather {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .current-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 15px;
-        }
-        
-        .current-header h2 {
-            color: #1e3a8a;
-            font-size: 1.5rem;
-        }
-        
-        .temp-display {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .current-temp {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #1e3a8a;
-        }
-        
-        .temp-unit {
-            font-size: 1.5rem;
-            color: #6b7280;
-        }
-        
-        .weather-condition {
-            font-size: 1.2rem;
-            color: #4b5563;
-            margin-bottom: 5px;
-        }
-        
-        .weather-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #4b5563;
-        }
-        
-        .detail-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #eff6ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #2563eb;
-        }
-        
-        .detail-value {
-            font-weight: 600;
-            color: #1e3a8a;
-        }
-        
-        /* Forecast Sections */
-        .forecast-section {
-            margin-bottom: 40px;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 10px;
-        }
-        
-        .section-header h2 {
-            color: #1e3a8a;
-            font-size: 1.5rem;
-        }
-        
-        .hourly-forecast {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-        }
-        
-        .hour-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .hour-time {
-            font-weight: 600;
-            color: #4b5563;
-            margin-bottom: 8px;
-        }
-        
-        .hour-temp {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1e3a8a;
-        }
-        
-        .daily-forecast {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        
-        .day-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .day-name {
-            font-weight: 600;
-            color: #1e3a8a;
-        }
-        
-        .day-temp {
-            font-weight: 700;
-            color: #1e3a8a;
-        }
-        
-        /* Climate Info */
-        .climate-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .info-item {
-            background-color: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .info-item h3 {
-            color: #1e3a8a;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-        
-        .info-list {
-            list-style-type: none;
-        }
-        
-        .info-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .info-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .season-info {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .season {
-            flex: 1;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .rainy {
-            background-color: #dbeafe;
-            color: #1e3a8a;
-        }
-        
-        .dry {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        
-        .season h4 {
-            margin-bottom: 5px;
-        }
-        
-        /* Inline Ad */
-        .inline-ad {
-            margin: 30px 0;
-            text-align: center;
-        }
-        
-        /* SEO Keywords */
-        .seo-keywords {
-            background-color: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 40px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid #2563eb;
-        }
-        
-        .seo-keywords h3 {
-            color: #1e3a8a;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-        
-        .keyword-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .keyword-tag {
-            background-color: #eff6ff;
-            color: #2563eb;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-        
-        /* Credits */
-        .credits {
-            text-align: center;
-            padding: 25px 0;
-            margin-top: 40px;
-            color: #6b7280;
-            font-size: 0.9rem;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .credits a {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .credits a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .logo {
-                justify-content: center;
-            }
-            
-            .current-temp {
-                font-size: 2.8rem;
-            }
-            
-            .hourly-forecast {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
-            
-            .daily-forecast {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-            
-            .weather-details {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            .hourly-forecast {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .daily-forecast {
-                grid-template-columns: 1fr;
-            }
-            
-            .season-info {
-                flex-direction: column;
-            }
-        }
-        
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .hidden {
-            display: none;
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
     
     <!-- Google Analytics/AdSense Tracking -->
     <script>
-        // Google Analytics/AdSense tracking code can be added here
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXX'); // Replace with your Google Analytics ID
+        gtag('config', 'G-XXXXXXX');
     </script>
 </head>
 <body>
@@ -479,9 +37,10 @@
                 <div class="logo">
                     <div class="logo-icon">
                         <i class="fas fa-sun"></i>
+                        <span class="thai-flag">🇹🇭</span>
                     </div>
                     <div>
-                        <h1>Bangkok Weather</h1>
+                        <h1>Bangkok Weather <span class="thai-flag">🇹🇭</span></h1>
                         <p>Live Forecast & Climate Information</p>
                     </div>
                 </div>
@@ -506,7 +65,7 @@
         <section class="weather-overview">
             <div class="card current-weather">
                 <div class="current-header">
-                    <h2>Current Weather in Bangkok</h2>
+                    <h2>Current Weather in Bangkok <span class="thai-flag-small">🇹🇭</span></h2>
                     <div class="temp-display">
                         <span class="current-temp" id="currentTemp">32</span>
                         <span class="temp-unit">°C</span>
@@ -514,7 +73,7 @@
                 </div>
                 
                 <div class="weather-condition" id="weatherCondition">
-                    <i class="fas fa-cloud-sun"></i> Partly Cloudy
+                    <i class="fas fa-cloud-sun"></i> Loading...
                 </div>
                 
                 <div class="weather-details">
@@ -524,7 +83,7 @@
                         </div>
                         <div>
                             <div>Feels Like</div>
-                            <div class="detail-value" id="feelsLike">34°C</div>
+                            <div class="detail-value" id="feelsLike">--°C</div>
                         </div>
                     </div>
                     
@@ -534,7 +93,7 @@
                         </div>
                         <div>
                             <div>Humidity</div>
-                            <div class="detail-value" id="humidity">65%</div>
+                            <div class="detail-value" id="humidity">--%</div>
                         </div>
                     </div>
                     
@@ -544,7 +103,7 @@
                         </div>
                         <div>
                             <div>Wind Speed</div>
-                            <div class="detail-value" id="windSpeed">12 km/h</div>
+                            <div class="detail-value" id="windSpeed">-- km/h</div>
                         </div>
                     </div>
                     
@@ -553,24 +112,24 @@
                             <i class="fas fa-cloud-rain"></i>
                         </div>
                         <div>
-                            <div>Rain Probability</div>
-                            <div class="detail-value" id="rainProb">30%</div>
+                            <div>Rain</div>
+                            <div class="detail-value" id="rainProb">-- mm</div>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="card">
-                <h3>Bangkok Weather Now</h3>
+                <h3><i class="fas fa-flag"></i> Bangkok Weather Now</h3>
                 <p>Current weather conditions in Bangkok show typical tropical climate patterns with warm temperatures and moderate humidity. The city experiences a tropical wet and dry climate with three main seasons.</p>
                 
                 <div class="season-info">
                     <div class="season rainy">
-                        <h4>Rainy Season</h4>
+                        <h4><i class="fas fa-umbrella"></i> Rainy Season</h4>
                         <p>May - October</p>
                     </div>
                     <div class="season dry">
-                        <h4>Dry Season</h4>
+                        <h4><i class="fas fa-sun"></i> Dry Season</h4>
                         <p>Nov - April</p>
                     </div>
                 </div>
@@ -585,31 +144,41 @@
         <!-- Hourly Forecast -->
         <section class="forecast-section">
             <div class="section-header">
-                <h2>Hourly Weather Forecast</h2>
+                <h2><i class="fas fa-clock"></i> Hourly Weather Forecast</h2>
                 <span>Next 24 hours</span>
             </div>
             
             <div class="hourly-forecast" id="hourlyForecast">
-                <!-- Hourly forecast will be generated by JavaScript -->
+                <div class="hour-card loading-skeleton">
+                    <div class="hour-time">--:--</div>
+                    <div class="hour-icon"><i class="fas fa-cloud"></i></div>
+                    <div class="hour-temp">--°C</div>
+                </div>
+                <!-- JavaScript will populate more -->
             </div>
         </section>
         
         <!-- 7-Day Forecast -->
         <section class="forecast-section">
             <div class="section-header">
-                <h2>7-Day Weather Forecast</h2>
+                <h2><i class="fas fa-calendar-alt"></i> 7-Day Weather Forecast</h2>
                 <span>Bangkok weekly outlook</span>
             </div>
             
             <div class="daily-forecast" id="dailyForecast">
-                <!-- Daily forecast will be generated by JavaScript -->
+                <div class="day-card loading-skeleton">
+                    <div class="day-name">---</div>
+                    <div class="day-icon"><i class="fas fa-cloud"></i></div>
+                    <div class="day-temp">--° / --°</div>
+                </div>
+                <!-- JavaScript will populate more -->
             </div>
         </section>
         
         <!-- Climate Information -->
         <section class="climate-info">
             <div class="info-item">
-                <h3>Bangkok Climate Information</h3>
+                <h3><i class="fas fa-info-circle"></i> Bangkok Climate Information</h3>
                 <ul class="info-list">
                     <li><span>Average Annual Temperature:</span> <strong>28.5°C</strong></li>
                     <li><span>Hottest Month:</span> <strong>April (35°C avg)</strong></li>
@@ -621,10 +190,10 @@
             </div>
             
             <div class="info-item">
-                <h3>Best Time to Visit Bangkok</h3>
+                <h3><i class="fas fa-plane"></i> Best Time to Visit Bangkok</h3>
                 <p>The best time to visit Bangkok for favorable weather is during the cool and dry season from November to February. During this period, temperatures are more moderate and rainfall is minimal.</p>
                 
-                <h3 style="margin-top: 20px;">Bangkok Weather Tips</h3>
+                <h3 style="margin-top: 20px;"><i class="fas fa-lightbulb"></i> Bangkok Weather Tips</h3>
                 <ul class="info-list">
                     <li><i class="fas fa-umbrella" style="color: #2563eb;"></i> Carry an umbrella during rainy season</li>
                     <li><i class="fas fa-sun" style="color: #2563eb;"></i> Use sunscreen year-round</li>
@@ -636,7 +205,7 @@
         
         <!-- SEO Keywords Section -->
         <section class="seo-keywords">
-            <h3>Bangkok Weather Information</h3>
+            <h3><i class="fas fa-search"></i> Bangkok Weather Information</h3>
             <p>Find comprehensive Bangkok weather information including current conditions, forecasts, climate data, and travel advice. Our Bangkok weather updates provide accurate real-time data for planning your activities in Thailand's capital.</p>
             
             <div class="keyword-tags">
@@ -657,263 +226,12 @@
     <!-- Credits -->
     <div class="container">
         <div class="credits">
-            
-             <p><a href="http://bangkokweather.top/about.html" target="_blank">About</a></p>
-            <p><a href="http://bangkokweather.top/privacy-policy.html" target="_blank">Pricavy Policy</a></p>
-             <p><a href="http://bangkokweather.top/cookie-policy.html" target="_blank">Cookie Policy</a></p>
-            <p><a href="http://bangkokweather.top/contact.html" target="_blank">Contact</a></p>
-            
+            <p>Credits: <a href="http://bangkokweather.top/" target="_blank">One Web Network NeT BiT Agency</a></p>
             <p>Weather data provided by Open-Meteo API | This Bangkok weather site is updated regularly with accurate forecast information</p>
         </div>
     </div>
     
-    <script>
-        // DOM Elements
-        const refreshBtn = document.getElementById('refreshBtn');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const currentTemp = document.getElementById('currentTemp');
-        const weatherCondition = document.getElementById('weatherCondition');
-        const feelsLike = document.getElementById('feelsLike');
-        const humidity = document.getElementById('humidity');
-        const windSpeed = document.getElementById('windSpeed');
-        const rainProb = document.getElementById('rainProb');
-        const hourlyForecast = document.getElementById('hourlyForecast');
-        const dailyForecast = document.getElementById('dailyForecast');
-        
-        // Bangkok coordinates for API
-        const BANGKOK_LAT = 13.7563;
-        const BANGKOK_LON = 100.5018;
-        
-        // Weather conditions mapping
-        const weatherCodes = {
-            0: { text: "Clear sky", icon: "fas fa-sun" },
-            1: { text: "Mainly clear", icon: "fas fa-cloud-sun" },
-            2: { text: "Partly cloudy", icon: "fas fa-cloud-sun" },
-            3: { text: "Overcast", icon: "fas fa-cloud" },
-            45: { text: "Foggy", icon: "fas fa-smog" },
-            48: { text: "Depositing rime fog", icon: "fas fa-smog" },
-            51: { text: "Light drizzle", icon: "fas fa-cloud-rain" },
-            53: { text: "Moderate drizzle", icon: "fas fa-cloud-rain" },
-            55: { text: "Dense drizzle", icon: "fas fa-cloud-rain" },
-            61: { text: "Slight rain", icon: "fas fa-cloud-rain" },
-            63: { text: "Moderate rain", icon: "fas fa-cloud-showers-heavy" },
-            65: { text: "Heavy rain", icon: "fas fa-cloud-showers-heavy" },
-            71: { text: "Slight snow", icon: "far fa-snowflake" },
-            73: { text: "Moderate snow", icon: "far fa-snowflake" },
-            75: { text: "Heavy snow", icon: "far fa-snowflake" },
-            80: { text: "Slight rain showers", icon: "fas fa-cloud-sun-rain" },
-            81: { text: "Moderate rain showers", icon: "fas fa-cloud-sun-rain" },
-            82: { text: "Violent rain showers", icon: "fas fa-poo-storm" },
-            95: { text: "Thunderstorm", icon: "fas fa-bolt" },
-            96: { text: "Thunderstorm with hail", icon: "fas fa-bolt" },
-            99: { text: "Heavy thunderstorm with hail", icon: "fas fa-bolt" }
-        };
-        
-        // Initialize page with weather data
-        document.addEventListener('DOMContentLoaded', function() {
-            loadWeatherData();
-            generateHourlyForecast();
-            generateDailyForecast();
-            
-            // Initialize AdSense ads
-            initializeAds();
-        });
-        
-        // Initialize AdSense
-        function initializeAds() {
-            // Initialize AdSense ads when page loads
-            // This will activate the ads loaded via the script in the head
-            console.log("AdSense initialized with ID: ca-pub-3452391762887871");
-            
-            // Example of how to push an ad unit (uncomment when you have actual ad unit codes)
-            /*
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-3452391762887871",
-                enable_page_level_ads: true
-            });
-            */
-        }
-        
-        // Refresh button functionality
-        refreshBtn.addEventListener('click', function() {
-            // Show loading spinner
-            loadingSpinner.classList.remove('hidden');
-            refreshBtn.querySelector('span').textContent = 'Loading...';
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                loadWeatherData();
-                generateHourlyForecast();
-                generateDailyForecast();
-                
-                // Hide loading spinner
-                loadingSpinner.classList.add('hidden');
-                refreshBtn.querySelector('span').textContent = 'Refresh Data';
-                
-                // Show update notification
-                showNotification('Weather data updated successfully!');
-            }, 1500);
-        });
-        
-        // Load current weather data
-        function loadWeatherData() {
-            // In a real implementation, this would fetch from Open-Meteo API
-            // For this example, we'll use mock data
-            
-            // Mock current weather data
-            const mockCurrentWeather = {
-                temperature: 32 + Math.floor(Math.random() * 3) - 1, // 31-33
-                feelsLike: 34 + Math.floor(Math.random() * 3) - 1, // 33-35
-                humidity: 65 + Math.floor(Math.random() * 10) - 5, // 60-70
-                windSpeed: 12 + Math.floor(Math.random() * 6) - 3, // 9-15
-                rainProbability: 30 + Math.floor(Math.random() * 20) - 10, // 20-40
-                weatherCode: Math.random() > 0.7 ? 1 : (Math.random() > 0.5 ? 2 : 3) // Mostly partly cloudy
-            };
-            
-            // Update DOM with current weather
-            currentTemp.textContent = mockCurrentWeather.temperature;
-            feelsLike.textContent = mockCurrentWeather.feelsLike + '°C';
-            humidity.textContent = mockCurrentWeather.humidity + '%';
-            windSpeed.textContent = mockCurrentWeather.windSpeed + ' km/h';
-            rainProb.textContent = mockCurrentWeather.rainProbability + '%';
-            
-            // Update weather condition
-            const condition = weatherCodes[mockCurrentWeather.weatherCode];
-            weatherCondition.innerHTML = `<i class="${condition.icon}"></i> ${condition.text}`;
-        }
-        
-        // Generate hourly forecast
-        function generateHourlyForecast() {
-            hourlyForecast.innerHTML = '';
-            
-            const now = new Date();
-            let currentHour = now.getHours();
-            
-            for (let i = 0; i < 12; i++) {
-                const hour = (currentHour + i) % 24;
-                const hourDisplay = hour === 0 ? '12 AM' : 
-                                  hour < 12 ? `${hour} AM` : 
-                                  hour === 12 ? '12 PM' : 
-                                  `${hour - 12} PM`;
-                
-                // Generate random temperature for each hour (between 28-35°C)
-                const temp = 30 + Math.floor(Math.random() * 6);
-                
-                // Determine weather condition for this hour
-                let weatherCode;
-                if (hour >= 6 && hour < 12) {
-                    weatherCode = Math.random() > 0.7 ? 0 : 1; // Mostly clear in morning
-                } else if (hour >= 12 && hour < 18) {
-                    weatherCode = Math.random() > 0.5 ? 2 : 3; // Partly to mostly cloudy in afternoon
-                } else {
-                    weatherCode = Math.random() > 0.8 ? 61 : 3; // Chance of rain in evening
-                }
-                
-                const condition = weatherCodes[weatherCode];
-                
-                const hourCard = document.createElement('div');
-                hourCard.className = 'hour-card';
-                hourCard.innerHTML = `
-                    <div class="hour-time">${hourDisplay}</div>
-                    <div style="font-size: 1.5rem; margin: 10px 0; color: #2563eb;">
-                        <i class="${condition.icon}"></i>
-                    </div>
-                    <div class="hour-temp">${temp}°C</div>
-                `;
-                
-                hourlyForecast.appendChild(hourCard);
-            }
-        }
-        
-        // Generate daily forecast
-        function generateDailyForecast() {
-            dailyForecast.innerHTML = '';
-            
-            const days = ['Today', 'Tomorrow', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            
-            days.forEach((day, index) => {
-                // Generate random temperatures
-                const maxTemp = 32 + Math.floor(Math.random() * 4);
-                const minTemp = maxTemp - 4;
-                
-                // Determine weather condition for the day
-                let weatherCode;
-                if (index === 0 || index === 1) {
-                    weatherCode = Math.random() > 0.5 ? 2 : 3; // Partly to mostly cloudy for today/tomorrow
-                } else if (index > 4) {
-                    weatherCode = Math.random() > 0.7 ? 61 : 2; // Chance of rain on weekend
-                } else {
-                    weatherCode = Math.random() > 0.6 ? 1 : 2; // Mostly clear to partly cloudy
-                }
-                
-                const condition = weatherCodes[weatherCode];
-                
-                const dayCard = document.createElement('div');
-                dayCard.className = 'day-card';
-                dayCard.innerHTML = `
-                    <div class="day-name">${day}</div>
-                    <div style="font-size: 1.2rem; color: #2563eb;">
-                        <i class="${condition.icon}"></i>
-                    </div>
-                    <div class="day-temp">${minTemp}° / ${maxTemp}°</div>
-                `;
-                
-                dailyForecast.appendChild(dayCard);
-            });
-        }
-        
-        // Show notification
-        function showNotification(message) {
-            // Remove any existing notification
-            const existingNotification = document.querySelector('.notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
-            
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background-color: #10b981;
-                color: white;
-                padding: 15px 25px;
-                border-radius: 8px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
-                font-weight: 600;
-                animation: slideIn 0.3s ease;
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Remove notification after 3 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-            
-            // Add CSS animations
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    </script>
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
